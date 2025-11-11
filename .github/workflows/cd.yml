@@ -1,8 +1,8 @@
-name: CD - msvc-auth
+name: CD-msvc-auth
 
 on:
   workflow_run:
-    workflows: [ "CI msvc-auth" ]
+    workflows: [ "CI-msvc-auth" ]
     types:
       - completed
 
@@ -19,7 +19,7 @@ jobs:
       - name: Download Artifact from CI
         uses: actions/download-artifact@v4
         with:
-          name: msvc-auth
+          name: msvc-auth-jar
           path: build/libs/
 
       - name: Set up JDK 21
