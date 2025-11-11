@@ -32,7 +32,6 @@ public class AuthService implements IAuthUseCase {
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         Role defaultRole = Role.CLIENT;
-
         User userToSave = User.builder()
                 .username(user.getUsername())
                 .password(encodedPassword)
@@ -42,7 +41,6 @@ public class AuthService implements IAuthUseCase {
                 .address(user.getAddress())
                 .rol(defaultRole)
                 .build();
-
         return userRepositoryPort.save(userToSave);
     }
 
@@ -58,7 +56,6 @@ public class AuthService implements IAuthUseCase {
 
         return Optional.of(token);
     }
-
 
     @Override
     public User getAuthenticatedUser(String username) {
