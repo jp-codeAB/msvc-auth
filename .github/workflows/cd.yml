@@ -27,6 +27,7 @@ jobs:
         with:
           name: msvc-auth-jar
           path: build/libs/
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Verify downloaded files
         run: ls -lh build/libs
