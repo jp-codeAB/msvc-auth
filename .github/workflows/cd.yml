@@ -19,7 +19,7 @@ jobs:
       - name: Download Artifact from CI
         uses: actions/download-artifact@v4
         with:
-          name: msvc-auth-jar
+          name: msvc-auth
           path: build/libs/
 
       - name: Set up JDK 21
