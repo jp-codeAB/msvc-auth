@@ -10,6 +10,21 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 100juanU
+          POSTGRES_DB: authdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,7 +40,11 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build and Run Tests
-        run: ./gradlew clean build -x test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/authdb
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: 100juanU
+        run: ./gradlew clean build --no-daemon
 
       - name: Upload Artifact (JAR File)
         uses: actions/upload-artifact@v4
