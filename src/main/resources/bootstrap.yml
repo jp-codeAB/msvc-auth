@@ -3,5 +3,5 @@ spring:
     name: msvc-auth
   cloud:
     config:
-      uri: http://localhost:8888
+      uri: ${CONFIG_SERVER_URL:http://localhost:8888}
       fail-fast: true
