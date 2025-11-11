@@ -6,6 +6,12 @@ on:
     types:
       - completed
 
+permissions:
+  contents: read
+  actions: read
+  checks: read
+  id-token: write
+
 jobs:
   docker:
     name: Build & Push Docker Image
@@ -21,6 +27,9 @@ jobs:
         with:
           name: msvc-auth-jar
           path: build/libs/
+
+      - name: Verify downloaded files
+        run: ls -lh build/libs
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
