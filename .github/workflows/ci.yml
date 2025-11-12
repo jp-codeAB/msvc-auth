@@ -36,18 +36,25 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x gradlew
+
       - name: Wait for PostgreSQL
         run: |
+          echo "Esperando que PostgreSQL esté listo..."
           for i in {1..30}; do
             pg_isready -h localhost -p 5432 -U postgres && break || sleep 2
           done
+
+      - name: Validate Gradle Wrapper
+        run: ./gradlew --version
 
       - name: Build without tests (CI stage)
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/authdb
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: 100juanU
-        run: ./gradlew clean build -x test
+        run: ./gradlew clean build -x test --no-daemon
 
       - name: Upload Artifact (JAR)
         uses: actions/upload-artifact@v4
