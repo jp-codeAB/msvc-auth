@@ -47,7 +47,7 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/authdb
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: 100juanU
-        run: ./gradlew clean build -x test --no-daemon
+        run: ./gradlew clean build -x test
 
       - name: Upload Artifact (JAR)
         uses: actions/upload-artifact@v4
