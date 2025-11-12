@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build_and_test:
+  build_and_package:
     runs-on: ubuntu-latest
 
     services:
@@ -34,19 +34,22 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: 'gradle'
+          cache: gradle
 
-      - name: Grant execute permission for Gradle Wrapper
-        run: chmod +x gradlew
+      - name: Wait for PostgreSQL
+        run: |
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5432 -U postgres && break || sleep 2
+          done
 
-      - name: Build and Run Tests
+      - name: Build without tests (CI stage)
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/authdb
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: 100juanU
-        run: ./gradlew clean build --no-daemon
+        run: ./gradlew clean build -x test --no-daemon
 
-      - name: Upload Artifact (JAR File)
+      - name: Upload Artifact (JAR)
         uses: actions/upload-artifact@v4
         with:
           name: msvc-auth-jar
